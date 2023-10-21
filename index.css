@@ -149,3 +149,56 @@ header {
 #profile-section:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18)
 }
+
+#category-bar {
+  display: flex;
+  padding: 20px 40px 0;
+  gap: 32px;
+  overflow: auto;
+}
+
+#category-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.category-button {
+  color: #717171;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.category-button img {
+  width: 28px;
+}
+
+.category-button:hover {
+  color: #000000;
+  border-bottom: 2px solid #dddddd;
+}
+
+.active-img {
+  display: none;
+}
+
+.category-button:hover .active-img {
+  display: inline-block;
+}
+
+.category-button:hover .inactive-img {
+  display: none;
+}
+
+/*  카테고리바 항목 클릭시 */
+#active-category-button {
+  color: #000000;
+  border-bottom: 2px solid #000000;
+}
+
+#active-category-button .active-img {
+  display: inline-block;
+}
+
+#active-category-button .inactive-img {
+  display: none;
+}

@@ -202,3 +202,59 @@ header {
 #active-category-button .inactive-img {
   display: none;
 }
+
+
+/*  */
+main {
+  display: flex;
+  justify-content: center;
+  padding: 24px 80px;
+}
+
+#place-items-wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 308px);
+  justify-items: center;
+  align-items: center;
+  gap: 40px 24px;
+}
+
+.place-image-wrapper {
+  position: relative;
+  width: 308px;
+  height: 293px;
+  border-radius: 23px;
+  overflow: hidden;
+}
+
+.place-image-wrapper img {
+  width: 500px;
+  height: 500px;
+}
+
+.place-image-wrapper .heart-icon {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 16px;
+  right: 16px;
+  cursor: pointer;
+}
+
+.description-section {
+  margin-top: 13px;
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  color: rgb(34, 34, 34);
+  gap: 3px;
+}
+
+.description-section-title {
+  font-weight: 600;
+}
+
+.heart-icon:active {
+  transform: scale(0.5);
+  transition: transfrom 0.25s ease;
+}

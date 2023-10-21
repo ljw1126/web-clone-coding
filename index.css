@@ -258,3 +258,25 @@ main {
   transform: scale(0.5);
   transition: transfrom 0.25s ease;
 }
+
+#floating-map-button {
+  position: fixed; 
+  left: 50%;
+  background-color: #222222;
+  bottom: 125px;
+  border-radius: 24px;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  padding: 14px 19px;
+  gap: 8px;
+  cursor: pointer;
+}
+
+#floating-map-button:hover {
+  box-shadow: 0 0 0 1px transparent, 0 0 0 4px transparent,         0 6px 16px rgba(0,0,0,0.12) !important;
+  transform: translateX(-50%) scale(1.04);
+}

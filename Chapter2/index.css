@@ -1,0 +1,160 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #24145E;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes rotation {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shrinkAndGrow {
+  0% {
+    transform: scale(0);
+  }
+  25% {
+    transform: scale(0.5);
+  }
+  50% {
+    transform: scale(0);
+  }
+  75% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+/* UFO-beam  */
+@keyframes expandHorizontal {
+  from {
+    /* 처음에 안보임 */
+    transform: scaleX(0); 
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+/* Y축은 2차원 생각하면 아래에서 위(원위치)로 돌아온다 */
+@keyframes appendFromBottom {
+  from {
+    transform: translateY(1000px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes shakingUpAndDown {
+  from {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(5px);  
+  }
+  50% {
+    transform: translateY(-5px); 
+  }
+  75% {
+    transform: translateY(5px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes soaking {
+  to {
+    transform: translateY(-250px) scale(0);
+  }
+}
+
+@keyframes shrinkHorinotal {
+  to {
+    transform: scaleX(0);
+  }
+}
+
+#planet_2 {
+  animation-name: rotation;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+#planet_1 {
+  animation-name: rotation;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  /* 중심을 전체가 아닌 해당 영역으로 잡음 */
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+#star_1 {
+  animation: shrinkAndGrow 1s infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+#star_2 {
+  animation: shrinkAndGrow 2s infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+#star_3 {
+  animation: shrinkAndGrow 3s infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+#star_4 {
+  animation: shrinkAndGrow 4s infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+#star_6 {
+  animation: shrinkAndGrow 6s infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+
+#UFO-beam {
+  animation: expandHorizontal 3s;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+#number-0 {
+  animation: appendFromBottom 3s;
+}
+
+#alien_hand-R, #alien_hand-L {
+  animation: shakingUpAndDown 1s infinite;
+}
+
+/* 애니메이션 종료 후 추가 변경 (1)*/
+#number-0-soaking {
+  animation: soaking 2s;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* 애니메이션 종료 후 추가 변경 (2)*/
+#UFO-beam-disappearing {
+  animation: shrinkHorinotal 2s;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+

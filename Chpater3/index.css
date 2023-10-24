@@ -94,3 +94,43 @@ a {
 #main-image {
 	min-width: 1000px;
 }
+
+/* 하단 */
+#main-content-wrapper {
+	margin-top: 50px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#document-title {
+	margin-bottom: 40px;
+	color: #B8E1EE;
+	font-size: 170%;
+	font-weight: 300;
+	letter-spacing: 10px;
+}
+
+/* 해당 그룹 전체 폰트 */
+#mountain-tag-wrapper {
+	font-size: 18px;
+	font-weight: 700;
+	display: flex;
+	gap: 50px;
+}
+
+.mountain-content-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+
+.mountain-content-list {
+	display: flex;
+	width: 325px;
+	height: 32px;
+	background-color: #B8E1EE;
+	color:#04120C;
+	justify-content: center;
+	align-items: center;
+}

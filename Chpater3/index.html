@@ -1587,5 +1587,16 @@
           element.setAttribute("id", "active-menu");
       });
   });
+
+  // a태그 클릭 이벤트시 smooth하게 스크롤 이동
+  const link = document.querySelector('a[href="#document-title"]');
+  link.addEventListener("click", () => {
+      event.preventDefault();
+
+      document.querySelector("#document-title").scrollIntoView({
+        behavior: "smooth"
+      });
+  });
+
 </script>
 </html>

@@ -113,6 +113,12 @@ a {
 	letter-spacing: 10px;
 }
 
+
+@media(max-width: 680px) {
+	#mountain-tag-wrapper {
+		flex-direction: column;
+	}
+}
 /* 해당 그룹 전체 폰트 */
 #mountain-tag-wrapper {
 	font-size: 18px;
@@ -135,4 +141,17 @@ a {
 	color:#04120C;
 	justify-content: center;
 	align-items: center;
+}
+
+.short-text {
+	display: none;
+}
+
+@media(max-width: 680px) {
+	.short-text {
+		display : inline-block;
+	}
+	.long-text {
+		display: none;
+	}
 }

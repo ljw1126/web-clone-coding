@@ -1557,27 +1557,30 @@
   const mountain6 = document.getElementById("mountain6");
   const mountain7 = document.getElementById("mountain7");
   
-  // 태양, 구름, 새, 산 이미지에 스크롤 이벤트시 css 속성 변경
+  let cliendWith = document.documentElement.clientWidth;
+
   window.addEventListener("scroll", () => {
-    const scrollY = window.scrollY;
+    if(cliendWith > 800) {
+      const scrollY = window.scrollY;
 
-    sun.style.transform = `translateY(${scrollY * 1.05}px)`; // 0에 가까울 수록 스크롤에 느리게 반응, 1은 빠름
+      sun.style.transform = `translateY(${scrollY * 1.05}px)`; // 0에 가까울 수록 스크롤에 느리게 반응, 1은 빠름
 
-    grayCloud.style.transform = `translateX(${scrollY * 0.125}px)`; // 오른쪽
-    whiteCloud.style.transform = `translateX(${scrollY * -0.125}px)`; // 왼쪽 이동
+      grayCloud.style.transform = `translateX(${scrollY * 0.125}px)`; // 오른쪽
+      whiteCloud.style.transform = `translateX(${scrollY * -0.125}px)`; // 왼쪽 이동
 
-    bird1.style.transform = `translateX(${scrollY}px)`
-		bird2.style.transform = `translateX(-${scrollY * 3.5}px)`
-		bird3.style.transform = `translateX(-${scrollY * 0.5}px)`
+      bird1.style.transform = `translateX(${scrollY}px)`;
+      bird2.style.transform = `translateX(-${scrollY * 3.5}px)`;
+      bird3.style.transform = `translateX(-${scrollY * 0.5}px)`;
 
-		mountain0.style.transform = `translateY(${scrollY * 0.95}px)`
-		mountain1.style.transform = `translateY(${scrollY * 0.93}px)`
-		mountain2.style.transform = `translateY(${scrollY * 0.9}px)`
-		mountain3.style.transform = `translateY(${scrollY * 0.8}px)`
-		mountain4.style.transform = `translateY(${scrollY * 0.7}px)`
-		mountain5.style.transform = `translateY(${scrollY * 0.6}px)`
-		mountain6.style.transform = `translateY(${scrollY * 0.3}px)`
-		mountain7.style.transform = `translateY(${scrollY * 0.1}px)`
+      mountain0.style.transform = `translateY(${scrollY * 0.95}px)`;
+      mountain1.style.transform = `translateY(${scrollY * 0.93}px)`;
+      mountain2.style.transform = `translateY(${scrollY * 0.9}px)`;
+      mountain3.style.transform = `translateY(${scrollY * 0.8}px)`;
+      mountain4.style.transform = `translateY(${scrollY * 0.7}px)`;
+      mountain5.style.transform = `translateY(${scrollY * 0.6}px)`;
+      mountain6.style.transform = `translateY(${scrollY * 0.3}px)`;
+      mountain7.style.transform = `translateY(${scrollY * 0.1}px)`;
+    }
   });
 
   // 헤더 메뉴 클릭 이벤트
@@ -1596,6 +1599,31 @@
       document.querySelector("#document-title").scrollIntoView({
         behavior: "smooth"
       });
+  });
+
+  window.addEventListener("resize", () => {
+    cliendWith = document.documentElement.clientWidth;
+    if(cliendWith < 800) {
+      const scrollY = window.scrollY;
+
+      sun.style.transform = `translateY(0px)`; // 0에 가까울 수록 스크롤에 느리게 반응, 1은 빠름
+
+      grayCloud.style.transform = `translateX(0px)`; // 오른쪽
+      whiteCloud.style.transform = `translateX(0px)`; // 왼쪽 이동
+
+      bird1.style.transform = `translateX(0px)`;
+      bird2.style.transform = `translateX(0px)`;
+      bird3.style.transform = `translateX(0px)`;
+
+      mountain0.style.transform = `translateY(0px)`;
+      mountain1.style.transform = `translateY(0px)`;
+      mountain2.style.transform = `translateY(0px)`;
+      mountain3.style.transform = `translateY(0px)`;
+      mountain4.style.transform = `translateY(0px)`;
+      mountain5.style.transform = `translateY(0px)`;
+      mountain6.style.transform = `translateY(0px)`;
+      mountain7.style.transform = `translateY(0px)`;
+    }
   });
 
 </script>

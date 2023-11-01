@@ -128,3 +128,18 @@ body {
   background-image: url("./icons/light_house.png");
 }
 
+/* 4-3 */
+/* main 태그에 이미지가 스크롤에 따라 transform 되어 움직이는 것처럼 표시 */
+#panel1-img {
+  overflow: hidden;
+  margin-bottom: 500px;
+  position: relative;  /*산타 이미지가 absloute로 움직이기 위해*/
+  height: 320px;
+}
+
+#flying-santa-image {
+  height: 310px;
+  position: absolute;
+  right: -20px;
+  transform: translate(80px, -13px) rotate(0deg);
+}

@@ -143,3 +143,26 @@ body {
   right: -20px;
   transform: translate(80px, -13px) rotate(0deg);
 }
+
+/* 4-5 비디오 */
+#video {
+  display: block;
+  margin: 0 auto;
+  height: 350px;
+}
+
+#video-section {
+  margin-bottom: 1000px;
+}
+
+#fixed-description {
+  width: 622px;
+  margin: 30px auto 0;
+  color: white;
+  text-align: right;
+  line-height: 50px;
+  font-size: 35px;
+  font-weight: 600;
+  transform: translateY(100px);
+  opacity: 0;
+}

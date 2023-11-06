@@ -67,6 +67,14 @@
         </div>
       </div>
     </section>
+    <div id="bank-beyond-wrapper">
+      <div id="bank-beyond">
+        <img src="./05-text.png" alt="sample text" width="315">
+      </div>
+    </div>
+    <div id="white-wrapper">
+      
+    </div>
   </main>
 
 </body>
@@ -162,12 +170,14 @@
       } else if(window.scrollY > fixedDesciptionAppearEnd) {
         // 영역 넘어간 경우 위에 고정
         fixedDescription.style.transform = `translateY(0px)`;
-        fixedDescrption.style.opacity = 1;
+        fixedDescription.style.opacity = 1;
       } else {
         // 초기화 - 숨김처리
         fixedDescription.style.transform = `translateY(100px)`;
         fixedDescription.style.opacity = 0;
       }
+
+      centerElement("bank-beyond");
     });
 </script>
 </html>

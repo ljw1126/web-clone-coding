@@ -166,3 +166,21 @@ body {
   transform: translateY(100px);
   opacity: 0;
 }
+
+/* 4-6 position fixed 텍스트 영역 */
+#bank-beyond-wrapper {
+  height: 380px;
+}
+
+#bank-beyond {
+  display: flex;
+  justify-content: center;
+}
+
+#white-wrapper {
+  padding-top: 80px;
+  background-color: #f7f7f7;
+  height: 1000px;
+  position: relative;
+  z-index: 10000;
+}

@@ -24,7 +24,16 @@
   </section>
 
   <section class="header hidden-area">
-    Header
+    <span class="circle" id="circle-1"></span>
+    <span class="circle" id="circle-2"></span>
+    <img id="cube_image_1" src="./images/Lovepik_com-401467010-cube.png" alt="cube image" class="cube_image">
+    <img id="cube_image_2" src="./images/Lovepik_com-401467010-cube.png" alt="cube image" class="cube_image">
+    <img id="cube_image_3" src="./images/Lovepik_com-401467010-cube.png" alt="cube image" class="cube_image">
+    <img id="cube_image_4" src="./images/Lovepik_com-401467010-cube.png" alt="cube image" class="cube_image">
+    <h1 class="header_title">
+      <div>LAST ART</div>
+      <div>PROJECTS</div>
+    </h1>
   </section>
 </body>
 
@@ -80,8 +89,11 @@
   function setPreloaderStyle(scale) {
     preloaderBtn.style.transform = `scale(${scale})`;
     // scale 커지면 1
-    document.querySelector(".preloader_btn_hold").style.opactiry = 1 - (scale - 1) / preloaderHideThreshold;
+    document.querySelector(".preloader_btn_hold").style.opactiy = 1 - (scale - 1) / preloaderHideThreshold;
   }
+  
+ 
+  const header = document.querySelector(".header");
 
   preloaderBtn.addEventListener("mousedown", () => {
     intervalId = setInterval(() => {
@@ -89,12 +101,14 @@
         setPreloaderStyle(scale);
 
         // threadholder가 넘어가면 hidden area , header 영역이 나타나게 함
-        if(scale > preloaderHideThreshold) {
-          const header = document.querySelector(".header");
+        if(scale >= 1 + preloaderHideThreshold) {
+          
           document.querySelector(".preloader").classList.add("hidden-area");
 
           header.classList.remove("hidden-area");
           header.classList.add("shown-are");
+
+          clearInterval(intervalId);
         }
     }, 10);
   });
@@ -106,10 +120,26 @@
       scale -= 0.075;
       setPreloaderStyle(scale);
       
-      if(scale > 1) {
+      if(scale <= 1) {
         clearInterval(intervalId); 
       }  
     }, 10);
   });
+
+  header.addEventListener("mousemove", (e) => {
+      const xRelativeToHeader = e.clientX / header.clientWidth;
+      const yRelativeToHeader = e.clientY / header.clientHeight;
+
+      document.querySelector(".header_title").style.transform = `translate(${xRelativeToHeader * -50}px, ${yRelativeToHeader * -50}px)`;
+
+      document.querySelector("#circle-1").style.transform = `translate(${xRelativeToHeader * -25}px, ${yRelativeToHeader * -25}px)`;
+      document.querySelector("#circle-2").style.transform = `translate(${xRelativeToHeader * 25}px, ${yRelativeToHeader * 25}px)`;
+
+      document.querySelector("#cube_image_1").style.transform = `translate(${xRelativeToHeader * -15}px, ${yRelativeToHeader * -15}px)`;
+      document.querySelector("#cube_image_2").style.transform = `translate(${xRelativeToHeader * -8}px, ${yRelativeToHeader * -8}px)`;
+      document.querySelector("#cube_image_3").style.transform = `translate(${xRelativeToHeader * -20}px, ${yRelativeToHeader * -20}px)`;
+      document.querySelector("#cube_image_4").style.transform = `translate(${xRelativeToHeader * 5}px, ${yRelativeToHeader * 5}px)`;
+  });
+  
 </script>
 </html>

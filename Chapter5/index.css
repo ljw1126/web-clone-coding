@@ -115,6 +115,7 @@ body {
 	background-color: #d5a54e;
 	animation: ripple .5s ease-out;
 	animation-fill-mode: forwards;
+	z-index: -1;
 }
 
 /* 
@@ -159,4 +160,74 @@ body {
 .hidden-area {
 	display: none;
 	opacity: 0;
+}
+
+/* 5-5 마우스 커서에 따라 입체적으로 움직이는 요소 */
+
+.header {
+	position: relative;
+	height: 100vh;
+	width: 100%;
+	overflow-x: hidden;
+}
+
+.circle {
+	position: absolute;
+	display: inline-block;
+	width: 350px;
+	height: 350px;
+	border: 1px solid rgba(0, 0, 0, .4);
+	border-radius: 50%;
+}
+
+#circle-1{
+	top: -100px;
+	left: -130px;
+}
+
+#circle-2{
+	bottom: 5vh;
+	right: -230px;
+}
+
+.cube_image {
+	position: absolute;
+	opacity: .45;
+}
+
+#cube_image_1 {
+	top: 15%;
+	left: 15%;
+	width: 15%;
+}
+
+/* 왼쪽 아래 */
+#cube_image_2 {
+	top: 55%;
+	left: 15%;
+	width: 20%;
+}
+
+/* 위 오른쪽 */
+#cube_image_3 {
+	top: 20%;
+	left: 70%;
+	width: 13%;
+}
+
+#cube_image_4 {
+	top: 60%;
+	left: 70%;
+	width: 20%;
+}
+
+.header_title {
+	position: absolute;
+	top: 30vh;
+	width :100%;
+	font-size: 7.5rem;
+	font-weight: 400;
+	line-height: 8.624rem;
+	color: rgb(213, 165, 78);
+	text-align: center;
 }

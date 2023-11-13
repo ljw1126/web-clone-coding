@@ -17,6 +17,15 @@
       <span class="cursor_trace_inner"></span>
     </div>
   </div>
+  <section class="preloader shown-area">
+    <button class="preloader_btn">
+      <span class="preloader_btn_hold">Hold</span>
+    </button>
+  </section>
+
+  <section class="header hidden-area">
+    Header
+  </section>
 </body>
 
 <script>
@@ -60,6 +69,47 @@
 
   document.addEventListener("click", (e) => {
     createRipple(e);
-  })
+  });
+
+  const preloaderBtn = document.querySelector(".preloader_btn");
+
+  let intervalId = null;
+  let scale = 1;
+  const preloaderHideThreshold = 18;
+
+  function setPreloaderStyle(scale) {
+    preloaderBtn.style.transform = `scale(${scale})`;
+    // scale 커지면 1
+    document.querySelector(".preloader_btn_hold").style.opactiry = 1 - (scale - 1) / preloaderHideThreshold;
+  }
+
+  preloaderBtn.addEventListener("mousedown", () => {
+    intervalId = setInterval(() => {
+        scale += 0.175;
+        setPreloaderStyle(scale);
+
+        // threadholder가 넘어가면 hidden area , header 영역이 나타나게 함
+        if(scale > preloaderHideThreshold) {
+          const header = document.querySelector(".header");
+          document.querySelector(".preloader").classList.add("hidden-area");
+
+          header.classList.remove("hidden-area");
+          header.classList.add("shown-are");
+        }
+    }, 10);
+  });
+
+  preloaderBtn.addEventListener("mouseup", () => {
+    clearInterval(intervalId);
+
+    intervalId = setInterval(() => {
+      scale -= 0.075;
+      setPreloaderStyle(scale);
+      
+      if(scale > 1) {
+        clearInterval(intervalId); 
+      }  
+    }, 10);
+  });
 </script>
 </html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>인터렉티브 웹</title>
+  <link rel="stylesheet" href="./index.css">
+
+</head>
+<body>
+  <div class="cursor">
+    <div class="cursor_default">
+      <span class="cursor_default_inner"></span>
+    </div>
+    <div class="cursor_trace">
+      <span class="cursor_trace_inner"></span>
+    </div>
+  </div>
+</body>
+
+<script>
+  document.addEventListener("mousemove", (e) => {
+    //console.log(e.clientX, e.clientY);
+    const cursor_default_inner = document.querySelector(".cursor_default_inner");
+    const cursor_trace_inner = document.querySelector(".cursor_trace_inner");
+    
+    cursor_default_inner.style.top = `${e.clientY}px`;
+    cursor_default_inner.style.left = `${e.clientX}px`;
+
+    cursor_trace_inner.style.top = `${e.clientY}px`;
+    cursor_trace_inner.style.left = `${e.clientX}px`;
+  });
+
+  // 클릭 이벤트 때
+  const cursor = document.querySelector(".cursor");
+
+  document.addEventListener("mousedown", (e) => {
+    cursor.classList.add("cursor--active");
+  });
+
+  document.addEventListener("mouseup", (e) => {
+    cursor.classList.remove("cursor--active");
+  });
+
+  function createRipple(e) {
+    let ripple = document.createElement("span");
+
+    ripple.classList.add("ripple");
+
+    cursor.appendChild(ripple);
+
+    ripple.style.top = `${e.clientY - ripple.clientHeight / 2}px`;
+    ripple.style.left = `${e.clientX - ripple.clientWidth / 2}px`;
+
+    ripple.addEventListener("animationend", () => {
+      cursor.removeChild(ripple);
+    });
+  }
+
+  document.addEventListener("click", (e) => {
+    createRipple(e);
+  })
+</script>
+</html>

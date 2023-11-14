@@ -12,12 +12,20 @@
       overflow: hidden;
     }
     canvas {
-      background-color: #f1f1f1;
+      filter: url("#gooey");
     }
   </style>
 </head>
 <body>
   <canvas></canvas>
+  <svg>
+    <defs>
+      <filter id="gooey">
+        <feGaussianBlur stdDeviation="40" in="SourceGraphic" result="blur1"/> <!-- stDeviation = x, y blur 처리-->
+        <feColorMatrix in="blur1" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 100 -43" /><!-- contraste 효과-->
+      </filter>
+    </defs>
+  </svg>
   <script type="module" src="./index.js"></script>
 </body>
 </html>

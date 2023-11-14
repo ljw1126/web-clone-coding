@@ -16,6 +16,42 @@ canvas.width = canvasWidth * dpr;
 canvas.height = canvasHeight * dpr;
 ctx.scale(dpr, dpr);
 
+// dot.GUT 설정
+const feGaussianBlur = document.querySelector("feGaussianBlur");
+const feColorMatrix = document.querySelector("feColorMatrix");
+
+const controls = new function() {
+  this.blurValue = 40
+  this.alphaChannel = 100
+  this.alphaOffset = -23
+  this.acc = 1.03
+}
+
+let gui = new dat.GUI();
+
+const f1 = gui.addFolder("gooey effect");
+// 블러                      최소, 최대 값 
+f1.add(controls, 'blurValue', 0, 100).onChange(value => {
+  feGaussianBlur.setAttribute("stdDeviation", value);
+}) 
+
+// 대비
+f1.add(controls, "alphaChannel", 1, 200).onChange(value => {
+  feColorMatrix.setAttribute('values', `1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 ${value} ${controls.alphaOffset}`);
+});
+
+f1.add(controls, "alphaOffset", -40, 40).onChange(value => {
+  feColorMatrix.setAttribute('values', `1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 ${controls.alphaChannel} ${value}`);
+});
+
+const f2 = gui.addFolder("particle property");
+// 가속도
+f2.add(controls, "acc", 1, 1.5, 0.01).onChange(value => {
+  particles.forEach(particle => particle.acc = value);
+});
+
+f1.open();
+f2.open();
 
 
 class Particle {

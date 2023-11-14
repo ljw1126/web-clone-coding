@@ -5,16 +5,33 @@ console.log(ctx);
 console.log(window.devicePixelRatio); // dpr 확인
 
 const dpr = window.devicePixelRatio;
+let canvasWidth, canvasHeight;
+let particles;
+let TOTAL;
 
-const canvasWidth = innerWidth;
-const canvasHeight = innerHeight;
+function init() {
+  canvasWidth = innerWidth;
+  canvasHeight = innerHeight;
+  
+  canvas.style.width = `${canvasWidth}px`;
+  canvas.style.height = `${canvasHeight}px`;
+  
+  canvas.width = canvasWidth * dpr;
+  canvas.height = canvasHeight * dpr;
+  ctx.scale(dpr, dpr);
 
-canvas.style.width = `${canvasWidth}px`;
-canvas.style.height = `${canvasHeight}px`;
+  particles = [];
+  TOTAL = canvasWidth / 10;
+  for(let i = 0; i < TOTAL; i++) {
+    const x = randomNumBetween(0, canvasWidth);
+    const y = randomNumBetween(0, canvasHeight);
+    const radius = randomNumBetween(50, 100);
+    const vy = randomNumBetween(1, 5);
 
-canvas.width = canvasWidth * dpr;
-canvas.height = canvasHeight * dpr;
-ctx.scale(dpr, dpr);
+    const particle = new Particle(x, y, radius, vy);
+    particles.push(particle);
+  }  
+}
 
 // dot.GUT 설정
 const feGaussianBlur = document.querySelector("feGaussianBlur");
@@ -79,21 +96,10 @@ const x = 100;
 const y = 100;
 const radius = 50;
 const particle = new Particle(x, y, radius);
-const TOTAL = 20;
+
 const randomNumBetween = (min, max) => {
   return Math.random() * (max - min + 1) + min;
 };
-
-let particles = [];
-for(let i = 0; i < TOTAL; i++) {
-  const x = randomNumBetween(0, canvasWidth);
-  const y = randomNumBetween(0, canvasHeight);
-  const radius = randomNumBetween(50, 100);
-  const vy = randomNumBetween(1, 5);
-
-  const particle = new Particle(x, y, radius, vy);
-  particles.push(particle);
-}
 
 
 let interval = 1000 / 60; 
@@ -125,4 +131,11 @@ function animate() {
   then = now - (delta % interval);
 }
 
-animate();
+window.addEventListener("load", () => {
+  init();
+  animate();
+})
+
+window.addEventListener("resize", () => {
+  init();
+})

@@ -24,8 +24,10 @@ class Particle {
     this.y = y;
     this.radius = radius;
     this.vy = vy; // y 변속도
+    this.acc = 1.03; // 가속도, 1미만 값을 곱하면 0으로 수렴해서 멈추게 됨
   }
   update() {
+    this.vy *= this.acc;
     this.y += this.vy;
   }
   draw() {

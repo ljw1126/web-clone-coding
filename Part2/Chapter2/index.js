@@ -1,12 +1,14 @@
 import CanvasOption from './js/CanvasOption.js';
 import Particle from './js/Particle.js';
 import { randomNumBetween, hypotenuse } from './js/utils.js';
+import Tail from './js/tail.js';
 
 class Canvas extends CanvasOption {
   constructor() {
     super();
 
     this.particles = [];
+    this.tails = [];
   }
   init() {
     this.canvasWidth = innerWidth;
@@ -20,11 +22,15 @@ class Canvas extends CanvasOption {
 
     this.createParticles();
   }
+  createTails() {
+    const x = randomNumBetween(this.canvasWidth * 0.2, this.canvasWidth * 0.8); // 20 ~ 80% 위치
+    const vy = this.canvasHeight * randomNumBetween(0.01, 0.015) * -1;
+    const color = '255, 255, 255';
+    this.tails.push(new Tail(x, vy, color));
+  }
 
-  createParticles() {
+  createParticles(x, y, color) {
     const PARTICLE_NUM = 200;
-    const x = randomNumBetween(0, this.canvasWidth);
-    const y = randomNumBetween(0, this.canvasHeight);
     for(let i = 0; i < PARTICLE_NUM; i++) {
       const r = randomNumBetween(2, 100) * hypotenuse(innerWidth, innerHeight) * 0.0001;
       const angle = Math.PI / 180 * randomNumBetween(0, 360);
@@ -33,7 +39,7 @@ class Canvas extends CanvasOption {
       const vy = r * Math.sin(angle);
 
       const opacity= randomNumBetween(0.6, 0.9);
-      this.particles.push(new Particle(x, y, vx, vy, opacity));
+      this.particles.push(new Particle(x, y, vx, vy, opacity, color));
     }
   }
 
@@ -51,6 +57,18 @@ class Canvas extends CanvasOption {
       this.ctx.fillStyle = this.bgColor + '40'; // #00000010 rgba 알파값 추가되어 contrast, blur 효과줌
       this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 
+      if(Math.random() < 0.03) this.createTails();
+
+      this.tails.forEach((tail, idx) => {
+        tail.update();
+        tail.draw();
+
+        if(tail.vy > -0.7) { // vy는 항상 minus 값이니
+          this.tails.splice(idx, 1);
+          this.createParticles(tail.x, tail.y, tail.color);
+        }
+      });
+
       this.particles.forEach((particle, index) => {
         particle.update();
         particle.draw();
@@ -58,7 +76,9 @@ class Canvas extends CanvasOption {
         if(particle.opacity < 0) {
             this.particles.splice(index, 1);
         }
-      })
+      });
+
+
 
       then = now - (delta % this.interval);
     }

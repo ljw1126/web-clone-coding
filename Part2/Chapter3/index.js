@@ -6,7 +6,7 @@ const dpr = window.devicePixelRatio;
 let canvasWidth;
 let canvasHeight;
 
-const fps = 1;
+const fps = 60;
 const interval = 1000 / fps;
 
 let particles = [];
@@ -22,7 +22,7 @@ function init() {
 }
 
 function createRing() {
-  const PARTICLE_NUM = 100;
+  const PARTICLE_NUM = 800;
   for(let i = 0; i < PARTICLE_NUM; i++) {
     particles.push(new Particle());
   }
@@ -40,11 +40,16 @@ function render() {
     delta = now - then
     if(delta < interval) return;
     
-    particles.forEach((particle, idx) => {
-      particle.update();
-      particle.draw(ctx);
-    });
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
+    for(let i = particles.length - 1; i >= 0; i--) {
+      particles[i].update();
+      particles[i].draw(ctx);
+
+      if(particles[i].opacity < 0) {
+        particles.splice(i, 1);
+      }
+    }
     then = now - (delta % interval);
   };  
   

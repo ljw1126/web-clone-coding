@@ -66,5 +66,37 @@ window.addEventListener("resize", () => {
 })
 
 window.addEventListener("click", () => {
-  createRing();
+  const texts = document.querySelectorAll("span");
+
+  const countDownOption = {
+    opacity: 1,
+    scale : 1,
+    duration: 0.4,
+    ease : "Power4.easeOut"
+  };
+
+  gsap.fromTo(texts[0], { opacity: 0, scale: 5}, {...countDownOption});
+  gsap.fromTo(texts[1], { opacity: 0, scale: 5}, {
+    ...countDownOption, 
+    delay : 1, 
+    onStart: () => texts[0].style.opacity = 0 // 2 시작시 3을 opacity 0으로
+  });
+
+  gsap.fromTo(texts[2], { opacity: 0, scale: 5}, {
+    ...countDownOption, 
+    delay : 2, 
+    onStart: () => texts[1].style.opacity = 0
+  });
+
+  const ringImg = document.querySelector("#ring");
+  gsap.fromTo(ringImg, {opacity : 1}, {
+    opacity: 0,
+    duration : 1,
+    delay: 3,
+    onStart: () => {
+      createRing();
+      texts[2].style.opacity = 0;
+    }
+  })
+  
 });

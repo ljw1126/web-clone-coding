@@ -1,8 +1,15 @@
+import Particle from './js/Particle.js';
+
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 const dpr = window.devicePixelRatio;
-let canvasWidth = innerWidth;
-let canvasHeight = innerHeight;
+let canvasWidth;
+let canvasHeight;
+
+const fps = 1;
+const interval = 1000 / fps;
+
+let particles = [];
 
 function init() {
   canvasWidth = innerWidth;
@@ -14,8 +21,13 @@ function init() {
   ctx.scale(dpr, dpr);
 }
 
-const fps = 1;
-const interval = 1000 / fps;
+function createRing() {
+  const PARTICLE_NUM = 100;
+  for(let i = 0; i < PARTICLE_NUM; i++) {
+    particles.push(new Particle());
+  }
+}
+
 
 function render() {
   let now, delta;
@@ -28,7 +40,11 @@ function render() {
     delta = now - then
     if(delta < interval) return;
     
-    console.log(1);
+    particles.forEach((particle, idx) => {
+      particle.update();
+      particle.draw(ctx);
+    });
+
     then = now - (delta % interval);
   };  
   
@@ -44,3 +60,6 @@ window.addEventListener("resize", () => {
   render();
 })
 
+window.addEventListener("click", () => {
+  createRing();
+});

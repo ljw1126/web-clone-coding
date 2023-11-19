@@ -25,9 +25,9 @@ function init() {
 
 const particles = [];
 
-function confetti({x, y, count, deg, colors}) {
+function confetti({x, y, count, deg, colors, shapes, spread}) {
   for(let i = 0; i < count; i++) {
-    particles.push(new Particle(x, y, deg, colors));
+    particles.push(new Particle(x, y, deg, colors, shapes, spread));
   }
 }
 
@@ -35,12 +35,7 @@ function render() {
   let now, delta;
   let then = Date.now;
 
-  let x = innerWidth / 2;
-  let y = innerHeight / 2;
-  let widthAlpha = 0;
-  const width = 50;
-  const height = 50;
-  let deg = 0.1;
+  let deg = 0;
 
   const frame = () => {
     requestAnimationFrame(frame);
@@ -50,11 +45,63 @@ function render() {
     if(delta < interval) return;
     ctx.clearRect(0, 0, canvasWidth, canvasHeight); // 리셋
 
+    deg += 1;
+
+    // confetti({
+    //   x : 0, // 0 ~ 1
+    //   y : 0, // 0 ~ 1
+    //   count : 5,
+    //   deg : 45,
+    // })
+
+    // confetti({
+    //   x : 1, // 0 ~ 1
+    //   y : 0, // 0 ~ 1
+    //   count : 5,
+    //   deg : 136,
+    // })
+
+    // 0.5, 0.5
+    // confetti({
+    //   x : Math.random(), 
+    //   y : Math.random(), 
+    //   count : 5,
+    //   deg : 270,
+    // })
+
+    confetti({
+      x : 0.5, 
+      y : 0.5, 
+      count : 5,
+      deg : 225 + deg,
+      spread : 1
+    })
+
+    confetti({
+      x : 0.5, 
+      y : 0.5, 
+      count : 5,
+      deg : 90 + deg,
+      spread : 1
+    })
+
+    confetti({
+      x : 0.5, 
+      y : 0.5, 
+      count : 5,
+      deg : 315 + deg,
+      spread : 1
+    })
+
     for(let i = particles.length - 1; i >= 0; i--) {
       particles[i].update();
       particles[i].draw(ctx);
 
       if(particles[i].opacity < 0) {
+        particles.splice(i, 1);
+      }
+
+      if(particles[i].y > canvasHeight) {
         particles.splice(i, 1);
       }
     }
@@ -71,7 +118,8 @@ window.addEventListener("click", () => {
     y : 0.5, // 0 ~ 1
     count : 50,
     deg : -50,
-    colors : [ '#ff0000' ]
+    shapes : ['circle'],
+    spread : 1
   })
 });
 window.addEventListener("resize", init);

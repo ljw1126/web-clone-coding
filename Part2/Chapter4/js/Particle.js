@@ -1,10 +1,10 @@
 import { hexToRgb, randomNumBetween } from './utils.js';
 
 export default class Particle {
-  constructor(x, y, deg = 0, colors) {
+  constructor(x, y, deg = 0, colors, shapes, spread = 30) {
     this.x = x * innerWidth;
     this.y = y * innerHeight;
-    this.angle =  Math.PI / 180 * randomNumBetween(deg - 30, deg + 30); // 라디안을 degree로, -30 ~ 30 사이로 
+    this.angle =  Math.PI / 180 * randomNumBetween(deg - spread, deg + spread); // 라디안을 degree로, -30 ~ 30 사이로 
     this.r = randomNumBetween(30, 100); // 반지름, 나가는 힘의 크기
 
     this.vx = this.r * Math.cos(this.angle);
@@ -29,6 +29,9 @@ export default class Particle {
     this.color = hexToRgb(
       this.colors[Math.floor(randomNumBetween(0, this.colors.length))]
     ); // 임의 한 개만 뽑음
+
+    this.shapes = shapes || ['circle', 'square'];
+    this.shape = this.shapes[Math.floor(randomNumBetween(0, this.shapes.length))];
   }
   update() {
     this.vy += this.gravity; // 아래로 내려감
@@ -46,19 +49,43 @@ export default class Particle {
 
     this.rotation += this.rotationDelta;
   }
-  draw(ctx) {
-    ctx.translate(this.x + this.width * 1.2, this.y + this.height * 1.2); // 축에서 더 이동시켜서 
-    ctx.rotate(Math.PI / 180 * this.ratation);
-    ctx.translate(- this.x - this.width * 1.2, -this.y - this.height * 1.2);
 
-    ctx.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.opacity})`;
+  drawSquare(ctx) {
     ctx.fillRect(
       this.x, 
       this.y,  
       this.width * Math.cos(Math.PI / 180 * this.widthDelta), // 좌우로 팔랑팔랑
       this.height * Math.sin(Math.PI / 180 * this.heightDelta) // 위 아래로 팔랑 팔랑
       );
-    
+  }
+
+  drawCircle(ctx) {
+    ctx. beginPath();
+    ctx.ellipse( // 반지름 두개로 타원을 그리는거 (arc는 한개)
+      this.x, 
+      this.y, 
+      Math.abs(this.width * Math.cos(Math.PI / 180 * this.widthDelta) / 2), // radiusX
+      Math.abs(this.height * Math.sin(Math.PI / 180 * this.heightDelta) / 2), // radiusY
+      0, // 회전인데 translate로 사용하므로 0
+      0, // 시작 각도
+      Math.PI * 2 // 끝나는 각도
+    );
+    ctx.fill();  
+    ctx.closePath();
+  }
+
+  draw(ctx) {
+    ctx.translate(this.x + this.width * 1.2, this.y + this.height * 1.2); // 축에서 더 이동시켜서 
+    ctx.rotate(Math.PI / 180 * this.ratation);
+    ctx.translate(- this.x - this.width * 1.2, -this.y - this.height * 1.2);
+
+    ctx.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.opacity})`;
+
+    switch (this.shape) {
+      case 'square' : this.drawSquare(ctx); break;
+      case 'circle' : this.drawCircle(ctx); break;
+    }
+
       ctx.resetTransform();
   }
 }

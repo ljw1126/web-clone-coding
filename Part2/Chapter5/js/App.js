@@ -1,4 +1,5 @@
 import Background from './Background.js';
+import Wall from './Wall.js';
 
 export default class App {
   static canvas = document.querySelector("canvas");
@@ -15,6 +16,10 @@ export default class App {
       new Background({img : document.querySelector("#bg2-img"), speed : -2}),
       new Background({img : document.querySelector("#bg1-img"), speed : -4})
     ];
+
+    this.walls = [
+      new Wall({type : 'BIG'})
+    ]
 
     window.addEventListener("resize", this.resize.bind(this)); // this == App, this가 없으면 window 객체 가르킴
   }
@@ -44,6 +49,11 @@ export default class App {
         bg.update();
         bg.draw();
       });
+
+      this.walls.forEach(wall => {
+        wall.update();
+        wall.draw();
+      })
 
       then = now - (delta % App.interval);
     }

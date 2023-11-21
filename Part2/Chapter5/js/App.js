@@ -18,7 +18,7 @@ export default class App {
     ];
 
     this.walls = [
-      new Wall({type : 'BIG'})
+      new Wall({type : 'SMALL'})
     ]
 
     window.addEventListener("resize", this.resize.bind(this)); // this == App, this가 없으면 window 객체 가르킴
@@ -44,16 +44,30 @@ export default class App {
       if(delta < App.interval) return;
 
       App.ctx.clearRect(0, 0, App.width, App.height);
-   
+      
+      // 배경 관련
       this.background.forEach(bg => {
         bg.update();
         bg.draw();
       });
+      
+      // 벽 관련
+      for(let i = this.walls.length - 1; i >= 0; i--) { // 사이드 이펙트 때문에 foreach대신 사용
+        this.walls[i].update();
+        this.walls[i].draw();
+        
+        // 벽 제거
+        if(this.walls[i].isOutside) {
+            this.walls.splice(i, 1);
+        }
+        
+        if(this.walls[i].canGenerateNext) {
+            this.walls[i].generatedNext = true;
+            this.walls.push(new Wall({type : Math.random() < 0.4 ? 'SMALL' : 'BIG'}));        
+        }
+      }
 
-      this.walls.forEach(wall => {
-        wall.update();
-        wall.draw();
-      })
+      console.log(this.walls.length);
 
       then = now - (delta % App.interval);
     }

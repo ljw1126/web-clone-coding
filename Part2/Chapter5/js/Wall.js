@@ -1,4 +1,5 @@
 import App from './App.js';
+import { randomNumBetween } from './utils.js';
 
 export default class Wall {
   constructor(config) {
@@ -18,10 +19,27 @@ export default class Wall {
 
     this.width = App.height * this.sizeX; 
     this.height = App.height;
+
+    this.gapY = randomNumBetween(App.height * 0.2, App.height * 0.35);
+    this.x = App.width;
+    // 최소: -this.height
+    // 최대: App.height - this.gapY - this.height
+    this.y1 = -this.height + randomNumBetween(30, App.height - this.gapY - 30); // 30px
+    this.y2 = this.y1 + this.height + this.gapY;
+
+    this.generatedNext = false; 
+    this.gapNextX = App.width * randomNumBetween(0.6, 0.75);
   }
   update() {
-
+    this.x += -6;
   }
+  get canGenerateNext() { // 벽 생성 가능 시점
+    return !this.generatedNext && this.x + this.width < this.gapNextX;
+  }
+  get isOutside() {
+    return this.x + this.width < 0; // 밖으로 사라진 경우
+  }
+
   draw() {
     App.ctx.drawImage(
       this.img,
@@ -29,8 +47,20 @@ export default class Wall {
       0,
       this.img.width * this.sizeX,
       this.img.height,
+      this.x,
+      this.y1,
+      this.width,
+      this.height
+    )
+
+    App.ctx.drawImage(
+      this.img,
+      this.sx,
       0,
-      0,
+      this.img.width * this.sizeX,
+      this.img.height,
+      this.x,
+      this.y2,
       this.width,
       this.height
     )

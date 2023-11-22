@@ -48,6 +48,6 @@ export default class Player {
       this.height
     );
 
-    this.boundingBox.draw();
+    //this.boundingBox.draw();
   }
 }

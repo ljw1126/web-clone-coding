@@ -1,4 +1,5 @@
 import Background from './Background.js';
+import Coin from './Coin.js';
 import Player from './Player.js';
 import Wall from './Wall.js';
 
@@ -23,6 +24,7 @@ export default class App {
     ]
 
     this.player = new Player();
+    this.coins = []; // 벽의 x, y좌표로 구해야 함
 
     window.addEventListener("resize", this.resize.bind(this)); // this == App, this가 없으면 window 객체 가르킴
   }
@@ -64,9 +66,17 @@ export default class App {
             this.walls.splice(i, 1);
         }
         
+        // 벽 생성
         if(this.walls[i].canGenerateNext) {
             this.walls[i].generatedNext = true;
-            this.walls.push(new Wall({type : Math.random() < 0.4 ? 'SMALL' : 'BIG'}));        
+            const newWall = new Wall({type : Math.random() < 0.4 ? 'SMALL' : 'BIG'});
+            this.walls.push(newWall);        
+
+            if(Math.random() < 0.5) { // 코인 생성 확률
+              const x = newWall.x + newWall.width / 2
+              const y = newWall.y2 - newWall.gapY / 2;
+              this.coins.push(new Coin(x, y, newWall.vx));
+            }
         }
 
         // 벽과 플레이어 충돌 여부
@@ -80,6 +90,16 @@ export default class App {
       // 플레이어 관련
       this.player.update();
       this.player.draw();
+
+      // 코인 관련 
+      for(let i = this.coins.length - 1; i >= 0; i--) {
+        this.coins[i].update();
+        this.coins[i].draw();
+
+        if(this.coins[i].x + this.coins[i].width < 0) { // 코인 제거
+            this.coins.splice(i, 1);
+        }
+      }
 
       //console.log(this.walls.length);
 

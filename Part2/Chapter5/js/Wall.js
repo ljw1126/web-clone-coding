@@ -34,13 +34,15 @@ export default class Wall {
     // 바운딩 박스
     this.boundingBox1= new BoundingBox(this.x + 30, this.y1 + 30, this.width - 60, this.height - 60);
     this.boundingBox2= new BoundingBox(this.x + 30, this.y2 + 30, this.width - 60, this.height - 60);
+  
+    this.vx = -6;
   }
   isColliding(target) {
     return this.boundingBox1.isColliding(target) || this.boundingBox2.isColliding(target);
   }
 
   update() {
-    this.x += -6;
+    this.x += this.vx;
     this.boundingBox1.x = this.boundingBox2.x = this.x + 30;
   }
   get canGenerateNext() { // 벽 생성 가능 시점
@@ -51,8 +53,8 @@ export default class Wall {
   }
 
   draw() {
-    //this.x = 700; 벽 고정 확인용
-    this.boundingBox1.x = this.boundingBox2.x = this.x + 30;
+    // this.x = 700; //벽 고정 확인용
+    // this.boundingBox1.x = this.boundingBox2.x = this.x + 30;
 
     // 벽 이미지
     App.ctx.drawImage(

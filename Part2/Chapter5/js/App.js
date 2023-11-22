@@ -1,6 +1,7 @@
 import Background from './Background.js';
 import Coin from './Coin.js';
 import Player from './Player.js';
+import Score from './Score.js';
 import Wall from './Wall.js';
 
 export default class App {
@@ -25,6 +26,8 @@ export default class App {
 
     this.player = new Player();
     this.coins = []; // 벽의 x, y좌표로 구해야 함
+    this.score = new Score();
+
 
     window.addEventListener("resize", this.resize.bind(this)); // this == App, this가 없으면 window 객체 가르킴
   }
@@ -103,14 +106,16 @@ export default class App {
         
         // 플레이어와 코인 충돌 여부
         if(this.coins[i].boundingBox.isColliding(this.player.boundingBox)) {
-          this.coins[i].boundingBox.color = `rgba(0, 0, 255, 0.3)`;
           this.coins.splice(i, 1);
-        } else {
-          this.coins[i].boundingBox.color = `rgba(255, 0, 0, 0.3)`;
-        }
+          this.score.coinCount += 1;
+        } 
       }
 
       //console.log(this.walls.length);
+
+      // 점수 관련 
+      this.score.update();
+      this.score.draw();
 
       then = now - (delta % App.interval);
     }

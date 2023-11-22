@@ -1,4 +1,5 @@
 import Background from './Background.js';
+import Player from './Player.js';
 import Wall from './Wall.js';
 
 export default class App {
@@ -20,6 +21,8 @@ export default class App {
     this.walls = [
       new Wall({type : 'SMALL'})
     ]
+
+    this.player = new Player();
 
     window.addEventListener("resize", this.resize.bind(this)); // this == App, this가 없으면 window 객체 가르킴
   }
@@ -67,7 +70,11 @@ export default class App {
         }
       }
 
-      console.log(this.walls.length);
+      // 플레이어 관련
+      this.player.update();
+      this.player.draw();
+
+      //console.log(this.walls.length);
 
       then = now - (delta % App.interval);
     }

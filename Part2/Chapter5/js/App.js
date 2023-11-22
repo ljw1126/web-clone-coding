@@ -1,5 +1,6 @@
 import Background from './Background.js';
 import Coin from './Coin.js';
+import GameHandler from './GameHandler.js';
 import Player from './Player.js';
 import Score from './Score.js';
 import Wall from './Wall.js';
@@ -19,27 +20,26 @@ export default class App {
       new Background({img : document.querySelector("#bg2-img"), speed : -2}),
       new Background({img : document.querySelector("#bg1-img"), speed : -4})
     ];
+    this.gameHandler = new GameHandler(this);
+    this.reset();
+  }
 
-    this.walls = [
-      new Wall({type : 'SMALL'})
-    ]
-
+  reset() {
+    this.walls = [new Wall({type : 'SMALL'})];
     this.player = new Player();
     this.coins = []; // 벽의 x, y좌표로 구해야 함
     this.score = new Score();
-
-
-    window.addEventListener("resize", this.resize.bind(this)); // this == App, this가 없으면 window 객체 가르킴
   }
 
-  resize() {
+  init() {
     App.canvas.width = App.width * App.dpr;
     App.canvas.height = App.height * App.dpr;
     App.ctx.scale(App.dpr, App.dpr);
-    
-    const width = innerWidth > innerHeight ? innerHeight * 0.9 : innerWidth * 0.9;
-    App.canvas.style.width = `${width}px`;
-    App.canvas.style.heigth = `${width * ( 3 / 4)}px`;
+
+    this.background.forEach(bg => {
+      bg.draw();
+      bg.update();
+    });
   }
 
   render() {
@@ -47,9 +47,12 @@ export default class App {
     let then = Date.now();
     const frame = () => {
       requestAnimationFrame(frame);
+
       now = Date.now();
       delta = now - then;
       if(delta < App.interval) return;
+
+      if(this.gameHandler._status !== 'PLAYING') return;
 
       App.ctx.clearRect(0, 0, App.width, App.height);
       
@@ -66,13 +69,14 @@ export default class App {
         
         // 벽 제거
         if(this.walls[i].isOutside) {
-            this.walls.splice(i, 1);
+          this.walls.splice(i, 1);
+          continue;
         }
         
         // 벽 생성
         if(this.walls[i].canGenerateNext) {
             this.walls[i].generatedNext = true;
-            const newWall = new Wall({type : Math.random() < 0.4 ? 'SMALL' : 'BIG'});
+            const newWall = new Wall({type : Math.random() > 0.3 ? 'SMALL' : 'BIG'});
             this.walls.push(newWall);        
 
             if(Math.random() < 1) { // 코인 생성 확률
@@ -84,15 +88,18 @@ export default class App {
 
         // 벽과 플레이어 충돌 여부
         if(this.walls[i].isColliding(this.player.boundingBox)) {
-          this.player.boundingBox.color = `rgba(255, 0, 0, 0.3)`;
-        } else {
-          this.player.boundingBox.color = `rgba(0, 0, 255, 0.3)`;
+          this.gameHandler.status = "FINISHED";
+          break;
         }
       }
 
       // 플레이어 관련
       this.player.update();
       this.player.draw();
+
+      if(this.player.y >= App.height || this.player.y + this.player.height <= 0) {
+          this.gameHandler.status = 'FINISHED';
+      }
 
       // 코인 관련 
       for(let i = this.coins.length - 1; i >= 0; i--) {

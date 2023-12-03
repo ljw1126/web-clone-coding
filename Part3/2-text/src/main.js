@@ -31,7 +31,7 @@ async function init() {
     500
   )
 
-  camera.position.z = 5;
+  camera.position.set(0, 1, 5);
 
   /** Controls */
   new OrbitControls(camera, renderer.domElement);
@@ -41,7 +41,7 @@ async function init() {
   // async, await, promise keyword 검색
   const font =  await fontLoader.loadAsync("./assets/fonts/The Jamsil 3 Regular_Regular.json");
 
-  const textGeometry = new TextGeometry("안녕, 친구들", {
+  const textGeometry = new TextGeometry("Three.js Interactive Web", {
     font,
     size: 0.5,
     height: 0.1 ,
@@ -64,26 +64,66 @@ async function init() {
 
   scene.add(text);
 
+  // Plane, 텍스트 뒤 평면 추가
+  const planeGeometry = new THREE.PlaneGeometry(2000, 2000);
+  const planeMaterial = new THREE.MeshPhongMaterial({color:0x000000});
+  
+  const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+  plane.position.z = -10;
+  scene.add(plane);
+
   // AmbientLight 조명 추가
-  const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
   scene.add(ambientLight);
 
-  /**PointLight */
-  const pointLight = new THREE.PointLight(0xffffff, 0.5);
-  pointLight.position.set(3, 0, 2);
+  // SpotLight 빛의 색상, 강도, 거리, 빛이 퍼지는 각도, 감쇠정도, 거리에 따라 빛이 어두워지는 각 
+  const spotLight = new THREE.SpotLight(0xffffff, 15, 30, Math.PI * 0.15, 0.2, 0.5);
+  spotLight.position.set(0, 0, 3);
+  spotLight.target.position.set(0, 0, -3);
+  scene.add(spotLight, spotLight.target);
 
-  scene.add(pointLight);
+  const spotLightHelpder = new THREE.SpotLightHelper(spotLight);
+  scene.add(spotLightHelpder);
 
-  gui
-  .add(pointLight.position, 'x')
-  .min(-3)
-  .max(3)
-  .step(0.1);
+  const spotLightFolder = gui.addFolder('SpotLight');
+  spotLightFolder
+  .add(spotLight, 'angle')
+  .min(0)
+  .max(Math.PI / 2)
+  .step(0.01);
+
+  spotLightFolder
+  .add(spotLight.position, 'z')
+  .min(1)
+  .max(10)
+  .step(0.01)
+  .name('position.z');
+
+  spotLightFolder
+  .add(spotLight, 'distance')
+  .min(1)
+  .max(30)
+  .step(0.01);
+
+  // 빛의 거리에 따라 희미해지는 정도 decay
+  spotLightFolder
+  .add(spotLight, 'decay')
+  .min(0)
+  .max(10)
+  .step(0.01);
+
+  spotLightFolder
+  .add(spotLight, 'penumbra')
+  .min(0)
+  .max(1)
+  .step(0.01);
 
   render();
 
   function render() {
     renderer.render(scene, camera);
+
+    spotLightHelpder.update();
 
     requestAnimationFrame(render);
   }

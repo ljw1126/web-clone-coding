@@ -1,7 +1,10 @@
 import * as THREE from 'three';
 import {FontLoader} from 'three/examples/jsm/loaders/FontLoader';
 import {TextGeometry} from 'three/examples/jsm/geometries/TextGeometry';
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
+import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer';
+import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass';
+import {UnrealBloomPass} from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import GUI from 'lil-gui';
 
 window.addEventListener("load", () => {
@@ -145,11 +148,43 @@ async function init() {
   .step(0.01)
   .name('shadow.radius');
 
+  // effects
+  const composer = new EffectComposer(renderer);
+
+  const renderPass = new RenderPass(scene, camera);
+  composer.addPass(renderPass);
+
+  const unrealBloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.2, 1, 0);
+  composer.addPass(unrealBloomPass);
+
+  const unrealBloomPassFolder = gui.addFolder('UnrealBloomPass');
+  
+  // 효과의 강도
+  unrealBloomPassFolder
+  .add(unrealBloomPass, 'strength')
+  .min(0)
+  .max(3)
+  .step(0.01);
+ 
+  // 빛의 밝기 조절
+  unrealBloomPassFolder
+  .add(unrealBloomPass, 'radius')
+  .min(0)
+  .max(1)
+  .step(0.01);
+
+  // 얼만큼의 빛의 량을 받았을 때 효과 나타낼 지 기준
+  unrealBloomPassFolder
+  .add(unrealBloomPass, 'threshold')
+  .min(0)
+  .max(1)
+  .step(0.01);
+
   render();
 
   function render() {
-    renderer.render(scene, camera);
-
+    composer.render();
+    
     requestAnimationFrame(render);
   }
 

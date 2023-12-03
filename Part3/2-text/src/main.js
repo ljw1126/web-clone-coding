@@ -50,6 +50,8 @@ async function init() {
 
   const text = new THREE.Mesh(textGeometry, textMaterial);
   
+  textGeometry.center();
+  
   scene.add(text);
 
   // AmbientLight 조명 추가

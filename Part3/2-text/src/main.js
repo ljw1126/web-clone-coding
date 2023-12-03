@@ -16,6 +16,9 @@ async function init() {
     antialias: true // 큐브 면에 까끌한거 제거
   });
 
+  // 그림자 설정
+  renderer.shadowMap.enabled = true;
+
   document.body.appendChild(renderer.domElement);
 
   renderer.setSize(innerWidth, innerHeight); //캔버스 사이즈 조정
@@ -53,7 +56,7 @@ async function init() {
   const textMaterial = new THREE.MeshPhongMaterial();
 
   const text = new THREE.Mesh(textGeometry, textMaterial);
-  
+  text.castShadow = true; // 그림자 설정
   textGeometry.center();
 
   /**texture */
@@ -70,6 +73,7 @@ async function init() {
   
   const plane = new THREE.Mesh(planeGeometry, planeMaterial);
   plane.position.z = -10;
+  plane.receiveShadow = true; // 그림자 설정
   scene.add(plane);
 
   // AmbientLight 조명 추가
@@ -90,6 +94,10 @@ async function init() {
   const spotLight = new THREE.SpotLight(0xffffff, 15, 30, Math.PI * 0.15, 0.2, 0.5);
   spotLight.position.set(0, 0, 3);
   spotLight.target.position.set(0, 0, -3);
+  spotLight.castShadow = true;
+  spotLight.shadow.mapSize.width = 1024; // 값이 높을 수록 해상도가 높아지지만, 렌더링 성능 영향 있음
+  spotLight.shadow.mapSize.height = 1024;
+  spotLight.shadow.radius = 10;
   scene.add(spotLight, spotLight.target);
 
   const spotLightFolder = gui.addFolder('SpotLight');
@@ -124,6 +132,13 @@ async function init() {
   .min(0)
   .max(1)
   .step(0.01);
+
+  spotLightFolder
+  .add(spotLight.shadow, 'radius')
+  .min(1)
+  .max(20)
+  .step(0.01)
+  .name('shadow.radius');
 
   render();
 

@@ -44,7 +44,11 @@ async function init() {
   const textGeometry = new TextGeometry("안녕, 친구들", {
     font,
     size: 0.5,
-    height: 0.1 
+    height: 0.1 ,
+    bevelEnabled: true,
+    bevelSegments: 5,
+    bevelSize: 0.02,
+    bevelThickness: 0.02
   })
   const textMaterial = new THREE.MeshPhongMaterial({color : 0x00c896});
 
@@ -60,10 +64,9 @@ async function init() {
 
   /**PointLight */
   const pointLight = new THREE.PointLight(0xffffff, 0.5);
-  const pointLightHelper = new THREE.PointLightHelper(pointLight, 0.5);
   pointLight.position.set(3, 0, 2);
 
-  scene.add(pointLight, pointLightHelper);
+  scene.add(pointLight);
 
   gui
   .add(pointLight.position, 'x')

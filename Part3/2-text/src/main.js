@@ -76,14 +76,21 @@ async function init() {
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
   scene.add(ambientLight);
 
+  // 마우스 인터랙션
+  window.addEventListener("mousemove", event => {
+    // 마우스 위치 값으로 spotLight의 target position을 변경한다 (0~1사이값)
+    const x = (event.clientX / innerWidth - 0.5) * 5;
+    const y = -((event.clientY / innerHeight -0.5) * 5);
+
+    spotLight.target.position.set(x, y, -3);
+  });
+
+
   // SpotLight 빛의 색상, 강도, 거리, 빛이 퍼지는 각도, 감쇠정도, 거리에 따라 빛이 어두워지는 각 
   const spotLight = new THREE.SpotLight(0xffffff, 15, 30, Math.PI * 0.15, 0.2, 0.5);
   spotLight.position.set(0, 0, 3);
   spotLight.target.position.set(0, 0, -3);
   scene.add(spotLight, spotLight.target);
-
-  const spotLightHelpder = new THREE.SpotLightHelper(spotLight);
-  scene.add(spotLightHelpder);
 
   const spotLightFolder = gui.addFolder('SpotLight');
   spotLightFolder
@@ -122,8 +129,6 @@ async function init() {
 
   function render() {
     renderer.render(scene, camera);
-
-    spotLightHelpder.update();
 
     requestAnimationFrame(render);
   }

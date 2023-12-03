@@ -98,6 +98,11 @@ async function init() {
   spotLight.shadow.mapSize.width = 1024; // 값이 높을 수록 해상도가 높아지지만, 렌더링 성능 영향 있음
   spotLight.shadow.mapSize.height = 1024;
   spotLight.shadow.radius = 10;
+
+  const spotLightTexture = textureLoader.load('gradient.jpg');
+  spotLightTexture.encoding = THREE.sRGBEncoding; // THREE.LinerEncoding default
+  spotLight.map = spotLightTexture;
+
   scene.add(spotLight, spotLight.target);
 
   const spotLightFolder = gui.addFolder('SpotLight');

@@ -8,7 +8,7 @@ window.addEventListener("load", () => {
   init();
 });
 
-function init() {
+async function init() {
   const gui = new GUI();
 
   // 1. 캔버스 가짐
@@ -38,21 +38,19 @@ function init() {
 
   /**Font */
   const fontLoader = new FontLoader();
-  fontLoader.load("./assets/fonts/The Jamsil 3 Regular_Regular.json",
-    font => {
-      // Text
-      const textGeometry = new TextGeometry("안녕, 친구들", {
-        font,
-        size: 0.5,
-        height: 0.1 
-      })
-      const textMaterial = new THREE.MeshPhongMaterial({color : 0x00c896});
+  // async, await, promise keyword 검색
+  const font =  await fontLoader.loadAsync("./assets/fonts/The Jamsil 3 Regular_Regular.json");
 
-      const text = new THREE.Mesh(textGeometry, textMaterial);
-      
-      scene.add(text);
-    },
-  );
+  const textGeometry = new TextGeometry("안녕, 친구들", {
+    font,
+    size: 0.5,
+    height: 0.1 
+  })
+  const textMaterial = new THREE.MeshPhongMaterial({color : 0x00c896});
+
+  const text = new THREE.Mesh(textGeometry, textMaterial);
+  
+  scene.add(text);
 
   // AmbientLight 조명 추가
   const ambientLight = new THREE.AmbientLight(0xffffff, 1);

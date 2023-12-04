@@ -10,6 +10,8 @@ window.addEventListener('load', function () {
 function init() {
   const gui = new GUI();
 
+  const COLORS = ['#ff6e6e', '#31e0c1', '#006fff', '#ffd732'];
+
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
     alpha: true
@@ -42,7 +44,7 @@ function init() {
   const card = new Card({
     width: 10, 
     height: 15.8,
-    color: '#0077ff',
+    color: COLORS[0],
     radius: 0.5
   });
   card.mesh.rotation.z = Math.PI * 0.1;
@@ -99,4 +101,20 @@ function init() {
   }
 
   window.addEventListener('resize', handleResize);
+
+
+  // 색상 버튼 추가 
+  const container = document.querySelector(".container");
+
+  COLORS.forEach(color => {
+    const btn = document.createElement("button");
+
+    btn.style.backgroundColor = color;
+
+    btn.addEventListener("click", () => {
+      card.mesh.material.color = new THREE.Color(color);
+    })
+
+    container.append(btn);
+  })
 }

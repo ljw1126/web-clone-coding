@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import Card from './Card.js';
 
 window.addEventListener('load', function () {
   init();
@@ -23,7 +24,20 @@ function init() {
     500,
   );
 
-  camera.position.z = 5;
+  camera.position.z = 25;
+
+  const card = new Card({
+    width: 10, 
+    height: 15.8,
+    color: '#0077ff',
+  });
+
+  scene.add(card.mesh);
+
+  // 조명 
+  const ambientLight = new THREE.AmbientLight(0xffffff, 2);
+  ambientLight.position.set(-5, -5, -5);
+  scene.add(ambientLight);
 
   render();
 

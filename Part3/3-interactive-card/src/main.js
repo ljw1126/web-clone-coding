@@ -31,6 +31,13 @@ function init() {
   camera.position.z = 25;
 
   const controls = new OrbitControls(camera, renderer.domElement);
+  controls.autoRotate = true; // 카드 회전
+  controls.autoRotateSpeed = 2.5;
+  controls.rotateSpeed = 0.75;
+  controls.enableDamping = true; //관성
+  controls.enableZoom = false; 
+  controls.minPolarAngle = Math.PI / 2 - Math.PI / 3; // 회전 각도 제한
+  controls.maxPolarAngle = Math.PI / 2 + Math.PI / 3;
 
   const card = new Card({
     width: 10, 
@@ -38,6 +45,7 @@ function init() {
     color: '#0077ff',
     radius: 0.5
   });
+  card.mesh.rotation.z = Math.PI * 0.1;
 
   scene.add(card.mesh);
 
@@ -73,6 +81,8 @@ function init() {
   render();
 
   function render() {
+    controls.update();
+
     renderer.render(scene, camera);
 
     requestAnimationFrame(render);

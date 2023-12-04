@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import Card from './Card.js';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 import {GUI} from 'lil-gui';
+import {gsap} from 'gsap';
 
 window.addEventListener('load', function () {
   init();
@@ -50,6 +51,9 @@ function init() {
   card.mesh.rotation.z = Math.PI * 0.1;
 
   scene.add(card.mesh);
+
+  // gsap 
+  gsap.to(card.mesh.rotation, {y : -Math.PI * 4, duration : 2.5, ease : 'back.out(2.5)'});
 
   // gui 
   const cardFolder = gui.addFolder("Card");
@@ -113,6 +117,8 @@ function init() {
 
     btn.addEventListener("click", () => {
       card.mesh.material.color = new THREE.Color(color);
+      // 현재 각도 기준으로 90도 만큼 회전
+      gsap.to(card.mesh.rotation, {y : card.mesh.rotation.y -  Math.PI / 2 , duration : 1, ease : 'back.out(2.5)'});
     })
 
     container.append(btn);

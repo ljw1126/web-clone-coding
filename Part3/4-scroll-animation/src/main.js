@@ -64,6 +64,16 @@ function init() {
     waveGeometry.attributes.position.setZ(i, z);
   }  
 
+  wave.update = () => {
+    const elapsedTime = clock.getElapsedTime();
+
+    for(let i = 0; i < waveGeometry.attributes.position.array.length; i += 3) {
+      waveGeometry.attributes.position.array[i + 2] += elapsedTime * 0.01;
+    }
+    waveGeometry.attributes.position.needsUpdate = true;
+
+  }
+
   scene.add(wave); 
   
   // 조명 
@@ -75,9 +85,13 @@ function init() {
   directionalLight.position.set(-15, 15, 15);
   scene.add(directionalLight);
 
+  const clock = new THREE.Clock();
+
   render();
 
   function render() {
+    wave.update();
+    
     renderer.render(scene, camera);
 
     requestAnimationFrame(render);

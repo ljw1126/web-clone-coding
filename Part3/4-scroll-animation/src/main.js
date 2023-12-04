@@ -2,11 +2,22 @@ import * as THREE from 'three';
 import {GUI} from 'lil-gui';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 
+import {gsap} from 'gsap';
+import {ScrollTrigger} from 'gsap/ScrollTrigger';
+
 window.addEventListener('load', function () {
   init();
 });
 
 async function init() {
+  gsap.registerPlugin(ScrollTrigger);
+
+  const params = {
+    waveColor: '#00ffff',
+    backgroundColor: '#ffffff',
+    fogColor: '#f0f0f0'
+  }
+
   const gui = new GUI();
 
   const canvas = document.querySelector("#canvas");
@@ -39,6 +50,8 @@ async function init() {
   .max(500)
   .step(0.1);
 
+  gui.hide();
+
 
   const camera = new THREE.PerspectiveCamera(
     75,
@@ -51,7 +64,7 @@ async function init() {
 
   const waveGeometry = new THREE.PlaneGeometry(1500, 1500, 150, 150);
   const waveMaterial = new THREE.MeshStandardMaterial({
-    color: '#00ffff',
+    color: params.waveColor,
   });
 
   //console.log(waveGeometry.attributes.position);
@@ -152,4 +165,70 @@ async function init() {
   }
 
   window.addEventListener('resize', handleResize);
+
+  // 애니메이션 
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '.wrapper',
+      start: 'top top', // 트리거 지정 상단 부분이 뷰포트 하단 영역에 도착하면 트리거 동작
+      end: 'bottom bottom',
+      //markers: true,
+      scrub: true
+    }
+  })
+
+  tl
+  .to(params, {
+    waveColor : '#4268ff',
+    onUpdate: () => {
+       waveMaterial.color = new THREE.Color(params.waveColor); 
+    },
+    duration: 1.5
+  })
+  .to(params, {
+    backgroundColor : '#2a2a2a',
+    onUpdate: () => {
+       scene.background = new THREE.Color(params.backgroundColor); 
+    },
+    duration: 1.5
+  }, '<')
+  .to(params, {
+    fogColor: '#2f2f2f',
+    onUpdate: () => {
+      scene.fog.color = new THREE.Color(params.fogColor); 
+   },
+   duration: 1.5
+  }, '<') // '<' : gsap timeline option 
+  .to(camera.position, {
+    x: 100, 
+    z: -50,
+    duration: 2.5
+  })
+  .to(ship.position, {
+    z: 150,
+    duration: 2
+  })
+  .to(camera.position, {
+    x: -50,
+    y: 25,
+    z: 100,
+    duration: 2
+  })
+  .to(camera.position, {
+    x: 0,
+    y: 50,
+    z: 300,
+    duration: 2
+  });
+
+  // 타이틀 애니메이션 
+  gsap.to(".title", {
+    opacity : 0,
+    scrollTrigger: {
+      trigger: ".wrapper",
+      scrub: true,
+      pin: true,
+      end: "+=1000" // 시작 지점부터 1000px까지
+    }
+  })
 }

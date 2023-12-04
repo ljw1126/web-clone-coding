@@ -1,10 +1,12 @@
 import * as THREE from 'three';
+import {GUI} from 'lil-gui';
 
 window.addEventListener('load', function () {
   init();
 });
 
 function init() {
+  const gui = new GUI();
 
   const canvas = document.querySelector("#canvas");
 
@@ -17,6 +19,23 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   const scene = new THREE.Scene();
+
+  //안개효과 (fog를 더 많이 사용, forexp2는 지수함수 증가로 자연스러움있지만)
+  scene.fog = new THREE.Fog(0xf0f0f0, 0.1, 500);
+  //scene.fog = new THREE.FogExp2(0xf0f0f0, 0.005);
+
+  gui
+  .add(scene.fog, 'near')
+  .min(0)
+  .max(100)
+  .step(0.1);
+
+  gui
+  .add(scene.fog, 'far')
+  .min(100)
+  .max(500)
+  .step(0.1);
+
 
   const camera = new THREE.PerspectiveCamera(
     75,
@@ -51,6 +70,10 @@ function init() {
   const pointLight = new THREE.PointLight(0xffffff, 4000, 0);
   pointLight.position.set(15, 15, 15);
   scene.add(pointLight);
+
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  directionalLight.position.set(-15, 15, 15);
+  scene.add(directionalLight);
 
   render();
 

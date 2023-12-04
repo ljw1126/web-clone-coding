@@ -36,6 +36,7 @@ function init() {
     width: 10, 
     height: 15.8,
     color: '#0077ff',
+    radius: 0.5
   });
 
   scene.add(card.mesh);

@@ -17,6 +17,8 @@ async function init() {
     canvas,
   });
 
+  renderer.shadowMap.enabled = true;
+
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   const scene = new THREE.Scene();
@@ -56,6 +58,7 @@ async function init() {
   
   const wave = new THREE.Mesh(waveGeometry, waveMaterial);
   wave.rotation.x = -Math.PI / 2;
+  wave.receiveShadow = true;
 
   const waveHeight = 2.5;
   const initZPositions = [];
@@ -86,6 +89,11 @@ async function init() {
   const gltfLoader = new GLTFLoader();
   const gltf = await gltfLoader.loadAsync("./models/ship/scene.gltf");
   const ship = gltf.scene;
+
+  ship.traverse(obj => {
+    if(obj.isMesh) obj.castShadow = true;
+  })
+
   ship.update = () => {
     const elapsedTime = clock.getElapsedTime();
 
@@ -94,16 +102,28 @@ async function init() {
 
   ship.rotation.y = Math.PI;
   ship.scale.set(50, 50, 1);
+  ship.castShadow = true;
   
   scene.add(ship);
 
   // 조명 
   const pointLight = new THREE.PointLight(0xffffff, 4000, 0);
   pointLight.position.set(15, 15, 15);
+  pointLight.castShadow = true;
+  pointLight.shadow.mapSize.width = 1024;
+  pointLight.shadow.mapSize.height = 1024;
+  pointLight.shadow.radius = 10;
+
   scene.add(pointLight);
+
 
   const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
   directionalLight.position.set(-15, 15, 15);
+  directionalLight.castShadow = true;
+  directionalLight.shadow.mapSize.width = 1024;
+  directionalLight.shadow.mapSize.height = 1024;
+  directionalLight.shadow.radius = 10;
+
   scene.add(directionalLight);
 
   const clock = new THREE.Clock();

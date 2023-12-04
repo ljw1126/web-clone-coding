@@ -57,18 +57,23 @@ function init() {
   wave.rotation.x = -Math.PI / 2;
 
   const waveHeight = 2.5;
-
+  const initZPositions = [];
+  // 파도 생성
   for(let i = 0; i < waveGeometry.attributes.position.count; i++) {
     const z = waveGeometry.attributes.position.getZ(i) + (Math.random() - 0.5) * waveHeight;
 
     waveGeometry.attributes.position.setZ(i, z);
+    initZPositions.push(z);
   }  
 
+  // rendering
   wave.update = () => {
     const elapsedTime = clock.getElapsedTime();
 
-    for(let i = 0; i < waveGeometry.attributes.position.array.length; i += 3) {
-      waveGeometry.attributes.position.array[i + 2] += elapsedTime * 0.01;
+    for(let i = 0; i < waveGeometry.attributes.position.count; i++) {
+      const z = initZPositions[i] + Math.sin(elapsedTime * 3 + i ** 2) * waveHeight;
+
+      waveGeometry.attributes.position.setZ(i, z); // i 번째 정점의 z 값 변경
     }
     waveGeometry.attributes.position.needsUpdate = true;
 
@@ -91,7 +96,7 @@ function init() {
 
   function render() {
     wave.update();
-    
+
     renderer.render(scene, camera);
 
     requestAnimationFrame(render);
